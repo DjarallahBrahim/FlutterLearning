@@ -18,28 +18,84 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
+  var _totalScore = 0;
   final List<Map<String, Object>> _questions = [
     {
       'questionText': 'What\'s your favorite color ?',
-      'answer': ['Black', 'Blue', 'Red', 'White'],
+      'answer': [
+        {
+          'text': 'Black',
+          'score': 5,
+        },
+        {
+          'text': 'Blue',
+          'score': 10,
+        },
+        {
+          'text': 'Red',
+          'score': 8,
+        },
+        {
+          'text': 'White',
+          'score': 2,
+        }
+      ],
     },
     {
       'questionText': 'What\'s your favorite animal',
-      'answer': ['Cat', 'Dog', 'Hamster', 'Rat'],
+      'answer': [
+        {
+          'text': 'Dog',
+          'score': 3,
+        },
+        {
+          'text': 'Hamster',
+          'score': 9,
+        },
+        {
+          'text': 'Cat',
+          'score': 5,
+        },
+        {
+          'text': 'Rat',
+          'score': 4,
+        }
+      ],
     },
     {
       'questionText': 'What\'s your favorite instructor',
-      'answer': ['Sam', 'Max', 'Tati', 'Bobo'],
+      'answer': [
+        {
+          'text': 'Sam',
+          'score': 10,
+        },
+        {
+          'text': 'Jemi',
+          'score': 0,
+        },
+        {
+          'text': 'Rami',
+          'score': 1,
+        },
+        {
+          'text': 'Rof',
+          'score': 9,
+        }
+      ],
     },
   ];
-  void _answerTheQuestion() {
+  void _answerTheQuestion(int score) {
     setState(() {
-      // _questionIndex < _questions.length - 1
-      //     ? _questionIndex++
-      //     : _questionIndex = 0;
+      _totalScore += score;
       _questionIndex++;
     });
-    print(_questionIndex);
+  }
+
+  void _resetQuiz() {
+    setState(() {
+      _totalScore = 0;
+      _questionIndex = 0;
+    });
   }
 
   @override
@@ -51,7 +107,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: _questionIndex < _questions.length
             ? Quiz(_questions, _answerTheQuestion, _questionIndex)
-            : Result(),
+            : Result(_totalScore, _resetQuiz),
       ),
     );
   }
