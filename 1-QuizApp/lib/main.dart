@@ -2,9 +2,10 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:fullet_guide_application/result.dart';
 
-import './question.dart';
-import './answer.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() => runApp(MyApp());
 
@@ -33,9 +34,10 @@ class _MyAppState extends State<MyApp> {
   ];
   void _answerTheQuestion() {
     setState(() {
-      _questionIndex < _questions.length - 1
-          ? _questionIndex++
-          : _questionIndex = 0;
+      // _questionIndex < _questions.length - 1
+      //     ? _questionIndex++
+      //     : _questionIndex = 0;
+      _questionIndex++;
     });
     print(_questionIndex);
   }
@@ -47,16 +49,9 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text("MyFirstApp"),
         ),
-        body: Column(
-          children: [
-            Question(
-              _questions[_questionIndex]['questionText'] as String,
-            ),
-            ...(_questions[_questionIndex]['answer'] as List<String>)
-                .map((answer) => Answer(_answerTheQuestion, answer))
-                .toList(),
-          ],
-        ),
+        body: _questionIndex < _questions.length
+            ? Quiz(_questions, _answerTheQuestion, _questionIndex)
+            : Result(),
       ),
     );
   }
