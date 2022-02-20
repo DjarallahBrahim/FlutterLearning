@@ -29,6 +29,9 @@ class MyApp extends StatelessWidget {
             subtitle2: TextStyle(
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.bold,
+            ),
+            button: TextStyle(
+              color: Colors.white,
             )),
         appBarTheme: AppBarTheme(
           titleTextStyle: TextStyle(
@@ -61,12 +64,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransactipon(String title, double amount) {
+  void _addNewTransactipon(String title, double amount, DateTime dateTransaction) {
     final newTx = Transaction(
       id: DateTime.now().toString(),
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: dateTransaction,
     );
 
     setState(() {
