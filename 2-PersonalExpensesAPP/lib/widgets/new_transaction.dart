@@ -1,5 +1,8 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_constructors_in_immutables
 
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -67,7 +70,6 @@ class _NewTransactionState extends State<NewTransaction> {
               onSubmitted: (_) => _submitData(),
             ),
             TextField(
-              toolbarOptions: const ToolbarOptions(copy: false),
               decoration: const InputDecoration(
                 labelText: 'Amount',
               ),
@@ -85,15 +87,25 @@ class _NewTransactionState extends State<NewTransaction> {
                         : 'Picked Date: ${DateFormat.yMd().format(_selectedDate!).toString()}',
                   ),
                 ),
-                TextButton(
-                  onPressed: _presentDatePicker,
-                  child: Text(
-                    'Chose Date',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                Platform.isIOS
+                    ? CupertinoButton(
+                        onPressed: _presentDatePicker,
+                        child: Text(
+                          'Chose Date',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    : TextButton(
+                        onPressed: _presentDatePicker,
+                        child: Text(
+                          'Chose Date',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
               ]),
             ),
             ElevatedButton(
