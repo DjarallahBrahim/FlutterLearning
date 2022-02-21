@@ -1,12 +1,20 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import './widgets/chart.dart';
 import './widgets/transaction_list.dart';
 import './widgets/new_transaction.dart';
 import './models/transaction.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  //   DeviceOrientation.portraitDown,
+  // ]);
+  return runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -52,7 +60,45 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [];
+  bool _switchView = false;
+  final List<Transaction> _userTransactions = [
+    Transaction(
+      id: 't1',
+      title: 'new Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 'z1',
+      title: 'new Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 'e1',
+      title: 'new Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'new shirt',
+      amount: 12.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'new bag',
+      amount: 30.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'new phone',
+      amount: 120.99,
+      date: DateTime.now(),
+    )
+  ];
 
   List<Transaction> get _recentTransaction {
     return _userTransactions.where((tx) {
@@ -94,23 +140,67 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Personal Expenses',
-        ),
-        actions: [
-          IconButton(
-              onPressed: () => _startAddNewTransaction(context),
-              icon: Icon(Icons.add))
-        ],
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
+
+    //Create variables for widget
+    final appBar = AppBar(
+      title: Text(
+        'Personal Expenses',
       ),
+      actions: [
+        IconButton(
+            onPressed: () => _startAddNewTransaction(context),
+            icon: Icon(Icons.add))
+      ],
+    );
+    final switWidget = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Show Chart!'),
+        Switch(
+          value: _switchView,
+          onChanged: (val) {
+            setState(() {
+              _switchView = val;
+            });
+          },
+        )
+      ],
+    );
+    final txListWidget = Container(
+      height: (mediaQuery.size.height -
+              appBar.preferredSize.height -
+              mediaQuery.padding.top) *
+          0.7,
+      child: TransactionList(_userTransactions, _deleteTransaction),
+    );
+
+    final txChartPortait = Container(
+      height: (mediaQuery.size.height -
+              appBar.preferredSize.height -
+              mediaQuery.padding.top) *
+          0.3,
+      child: Chart(_recentTransaction),
+    );
+    final txChartLandScape = Container(
+      height: (mediaQuery.size.height -
+              appBar.preferredSize.height -
+              mediaQuery.padding.top) *
+          0.7,
+      child: Chart(_recentTransaction),
+    );
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Chart(_recentTransaction),
-            TransactionList(_userTransactions, _deleteTransaction),
+            if (isLandscape) switWidget,
+            if (!isLandscape) txChartPortait,
+            if (!isLandscape) txListWidget,
+            if (isLandscape) _switchView ? txChartLandScape : txListWidget
           ],
         ),
       ),
