@@ -33,24 +33,45 @@ class _NewTransactionState extends State<NewTransaction> {
     Navigator.of(context).pop();
   }
 
-  void _presentDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2019),
-            lastDate: DateTime.now())
-        .then((date) {
-      if (date == null) {
-        return null;
-      }
-      setState(() {
-        _selectedDate = date;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    void _showDialog(Widget child) {
+      showCupertinoModalPopup<void>(
+          context: context,
+          builder: (BuildContext context) => Container(
+                height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.2,
+                padding: const EdgeInsets.only(top: 6.0),
+                // The Bottom margin is provided to align the popup above the system navigation bar.
+                margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                // Provide a background color for the popup.
+                color: CupertinoColors.systemBackground.resolveFrom(context),
+                // Use a SafeArea widget to avoid system overlaps.
+                child: SafeArea(
+                  top: false,
+                  child: child,
+                ),
+              ));
+    }
+
+    void _presentDatePicker() {
+      showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2019),
+              lastDate: DateTime.now())
+          .then((date) {
+        if (date == null) {
+          return null;
+        }
+        setState(() {
+          _selectedDate = date;
+        });
+      });
+    }
+
     return SingleChildScrollView(
       child: Card(
         elevation: 5,
@@ -78,7 +99,7 @@ class _NewTransactionState extends State<NewTransaction> {
               onSubmitted: (_) => _submitData(),
             ),
             Container(
-              height: 70,
+              height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.1,
               child: Row(children: [
                 Expanded(
                   child: Text(
@@ -89,22 +110,31 @@ class _NewTransactionState extends State<NewTransaction> {
                 ),
                 Platform.isIOS
                     ? CupertinoButton(
-                        onPressed: _presentDatePicker,
                         child: Text(
                           'Chose Date',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () => _showDialog(
+                          CupertinoDatePicker(
+                            initialDateTime: DateTime.now(),
+                            mode: CupertinoDatePickerMode.date,
+                            use24hFormat: true,
+                            onDateTimeChanged: (DateTime newDate) {
+                              setState(() => _selectedDate = newDate);
+                            },
                           ),
                         ),
                       )
                     : TextButton(
-                        onPressed: _presentDatePicker,
                         child: Text(
                           'Chose Date',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        onPressed: _presentDatePicker,
                       ),
               ]),
             ),
