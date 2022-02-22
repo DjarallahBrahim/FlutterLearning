@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import './adaptive_flat_button.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addNewTransactipon;
@@ -36,7 +37,16 @@ class _NewTransactionState extends State<NewTransaction> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    void _showDialog(Widget child) {
+    void _dateHandler(newDate) {
+      if (newDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = newDate;
+      });
+    }
+
+    void showCupertinoDatePicker(dateHandler) {
       showCupertinoModalPopup<void>(
           context: context,
           builder: (BuildContext context) => Container(
@@ -51,25 +61,24 @@ class _NewTransactionState extends State<NewTransaction> {
                 // Use a SafeArea widget to avoid system overlaps.
                 child: SafeArea(
                   top: false,
-                  child: child,
+                  child: CupertinoDatePicker(
+                    initialDateTime: DateTime.now(),
+                    mode: CupertinoDatePickerMode.date,
+                    use24hFormat: true,
+                    onDateTimeChanged: (DateTime newDate) =>
+                        dateHandler(newDate),
+                  ),
                 ),
               ));
     }
 
-    void _presentDatePicker() {
+    void _presentDatePicker(dateHandler) {
       showDatePicker(
               context: context,
               initialDate: DateTime.now(),
               firstDate: DateTime(2019),
               lastDate: DateTime.now())
-          .then((date) {
-        if (date == null) {
-          return null;
-        }
-        setState(() {
-          _selectedDate = date;
-        });
-      });
+          .then((date) => dateHandler(date));
     }
 
     return SingleChildScrollView(
@@ -108,34 +117,8 @@ class _NewTransactionState extends State<NewTransaction> {
                         : 'Picked Date: ${DateFormat.yMd().format(_selectedDate!).toString()}',
                   ),
                 ),
-                Platform.isIOS
-                    ? CupertinoButton(
-                        child: Text(
-                          'Chose Date',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onPressed: () => _showDialog(
-                          CupertinoDatePicker(
-                            initialDateTime: DateTime.now(),
-                            mode: CupertinoDatePickerMode.date,
-                            use24hFormat: true,
-                            onDateTimeChanged: (DateTime newDate) {
-                              setState(() => _selectedDate = newDate);
-                            },
-                          ),
-                        ),
-                      )
-                    : TextButton(
-                        child: Text(
-                          'Chose Date',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onPressed: _presentDatePicker,
-                      ),
+                AdaptiveFlatButton('Chose Date', showCupertinoDatePicker,
+                    _presentDatePicker, _dateHandler)
               ]),
             ),
             ElevatedButton(
