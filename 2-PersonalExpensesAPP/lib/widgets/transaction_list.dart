@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/transaction.dart';
@@ -17,7 +15,7 @@ class TransactionList extends StatelessWidget {
             itemBuilder: (ctx, index) {
               return Card(
                 elevation: 5,
-                margin: EdgeInsets.symmetric(
+                margin: const EdgeInsets.symmetric(
                   vertical: 8,
                   horizontal: 5,
                 ),
@@ -25,11 +23,11 @@ class TransactionList extends StatelessWidget {
                   leading: CircleAvatar(
                     radius: 30,
                     child: Padding(
-                      padding: EdgeInsets.all(6),
+                      padding: const EdgeInsets.all(6),
                       child: FittedBox(
                         child: Text(
                           '\$${(trasactions[index].amount).toStringAsFixed(2)}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -47,15 +45,15 @@ class TransactionList extends StatelessWidget {
                       ? TextButton.icon(
                           onPressed: () =>
                               deleteTransaction(trasactions[index].id),
-                          icon: Icon(Icons.delete),
-                          label: Text('Delete'),
+                          icon: const Icon(Icons.delete),
+                          label: const Text('Delete'),
                           style: ButtonStyle(
                             foregroundColor: MaterialStateProperty.all<Color>(
                                 Theme.of(context).errorColor),
                           ),
                         )
                       : IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           color: Theme.of(context).errorColor,
                           onPressed: () =>
                               deleteTransaction(trasactions[index].id),
@@ -71,7 +69,7 @@ class TransactionList extends StatelessWidget {
                 'No Transacation added yet!',
                 style: Theme.of(context).textTheme.headline6,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(

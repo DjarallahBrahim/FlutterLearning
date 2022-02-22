@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, prefer_const_constructors
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -31,19 +30,19 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
-            headline6: TextStyle(
+            headline6: const TextStyle(
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
-            subtitle2: TextStyle(
+            subtitle2: const TextStyle(
               fontFamily: 'OpenSans',
               fontWeight: FontWeight.bold,
             ),
-            button: TextStyle(
+            button: const TextStyle(
               color: Colors.white,
             )),
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
             fontFamily: 'OpenSans',
             fontSize: 20,
@@ -65,37 +64,37 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _switchView = false;
   final List<Transaction> _userTransactions = [
     Transaction(
-      id: 't1',
+      id: 'a',
       title: 'new Shoes',
       amount: 69.99,
       date: DateTime.now(),
     ),
     Transaction(
-      id: 'z1',
+      id: 'z',
       title: 'new Shoes',
       amount: 69.99,
       date: DateTime.now(),
     ),
     Transaction(
-      id: 'e1',
+      id: 'e',
       title: 'new Shoes',
       amount: 69.99,
       date: DateTime.now(),
     ),
     Transaction(
-      id: 't2',
+      id: 'r',
       title: 'new shirt',
       amount: 12.99,
       date: DateTime.now(),
     ),
     Transaction(
-      id: 't1',
+      id: 't',
       title: 'new bag',
       amount: 30.99,
       date: DateTime.now(),
     ),
     Transaction(
-      id: 't1',
+      id: 'y',
       title: 'new phone',
       amount: 120.99,
       date: DateTime.now(),
@@ -106,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return _userTransactions.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
-          Duration(days: 7),
+          const Duration(days: 7),
         ),
       );
     }).toList();
@@ -148,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //Create variables for widget
     final PreferredSizeWidget appBar = Platform.isIOS
         ? CupertinoNavigationBar(
-            middle: Text(
+            middle: const Text(
               'Personal Expenses',
             ),
             trailing: Row(
@@ -162,13 +161,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           )
         : AppBar(
-            title: Text(
+            title: const Text(
               'Personal Expenses',
             ),
             actions: [
               IconButton(
                 onPressed: () => _startAddNewTransaction(context),
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
               ),
             ],
           ) as PreferredSizeWidget;
@@ -237,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
             floatingActionButton: Platform.isIOS
                 ? null
                 : FloatingActionButton(
-                    child: Icon(Icons.add),
+                    child: const Icon(Icons.add),
                     onPressed: () => _startAddNewTransaction(context),
                   ),
           );

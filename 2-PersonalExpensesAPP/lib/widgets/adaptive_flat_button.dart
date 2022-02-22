@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
 
@@ -20,7 +19,7 @@ class AdaptiveFlatButton extends StatelessWidget {
         ? CupertinoButton(
             child: Text(
               _text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -29,7 +28,7 @@ class AdaptiveFlatButton extends StatelessWidget {
         : TextButton(
             child: Text(
               _text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
