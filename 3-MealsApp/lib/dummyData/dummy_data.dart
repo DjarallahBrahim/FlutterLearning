@@ -53,4 +53,14 @@ const dummyCategories = [
     title: 'Summer',
     color: Colors.teal,
   ),
+  Category(
+    id: 'c11',
+    title: 'Algeria',
+    color: Color.fromARGB(134, 87, 3, 167),
+  ),
+  Category(
+    id: 'c12',
+    title: 'Moroco',
+    color: Color.fromARGB(255, 199, 86, 12),
+  ),
 ];

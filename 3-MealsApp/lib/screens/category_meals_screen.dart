@@ -13,7 +13,7 @@ class CategoryMealsScreen extends StatelessWidget {
     final Category routeArgs =
         ModalRoute.of(context)?.settings.arguments as Category;
     return Scaffold(
-      appBar: AdaptiveAppBar('DeliMeal', AppBar(), []),
+      appBar: AdaptiveAppBar(routeArgs.title, AppBar(), []),
       body: Center(
         child: Text('The recipes For The Category!',
             style: Theme.of(context).textTheme.headline6),
