@@ -138,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _userTransactions.removeWhere((item) => item.id == id);
     });
   }
-
+  //Build Function
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -155,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () => _startAddNewTransaction(context),
-                  child: Icon(CupertinoIcons.add),
+                  child: const Icon(CupertinoIcons.add),
                 ),
               ],
             ),
@@ -212,6 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
           0.7,
       child: Chart(_recentTransaction),
     );
+
     final bodyWidget = SafeArea(
       child: SingleChildScrollView(
         child: Column(
