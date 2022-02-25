@@ -12,25 +12,22 @@ class CategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    return Scaffold(
-      appBar: AdaptiveAppBar('DeliMeal', AppBar(), []),
-      body: GridView(
-        padding: const EdgeInsets.all(25),
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          //width max
-          maxCrossAxisExtent: (mediaQuery.size.width -
-                  mediaQuery.padding.left -
-                  mediaQuery.padding.right) /
-              2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-        ),
-        children: dummyCategories
-            .map((catDate) => CategoryItem(
-                id: catDate.id, title: catDate.title, color: catDate.color))
-            .toList(),
+    return GridView(
+      padding: const EdgeInsets.all(25),
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        //width max
+        maxCrossAxisExtent: (mediaQuery.size.width -
+                mediaQuery.padding.left -
+                mediaQuery.padding.right) /
+            2,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
       ),
+      children: dummyCategories
+          .map((catDate) => CategoryItem(
+              id: catDate.id, title: catDate.title, color: catDate.color))
+          .toList(),
     );
   }
 }
