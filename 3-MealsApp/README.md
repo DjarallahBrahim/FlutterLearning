@@ -1,16 +1,10 @@
 # meals_app
 
-A new Flutter project.
+# Android
 
-## Getting Started
+![image](https://user-images.githubusercontent.com/30822995/155742265-e0bb139b-d11c-4462-8233-ca58e475223f.png)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![image](https://user-images.githubusercontent.com/30822995/155742316-c398db08-ed24-4cbb-b559-f7fb279f0299.png)
+![image](https://user-images.githubusercontent.com/30822995/155742363-f07e8dba-0341-44b4-ac33-ffda34c58fbe.png)
+![image](https://user-images.githubusercontent.com/30822995/155742413-f8552e10-37b7-4ee1-9d26-62c7b57fa39f.png)
+![image](https://user-images.githubusercontent.com/30822995/155742437-c5bb6161-aa06-47a1-b71d-f9d743a85f7d.png)
