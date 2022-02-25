@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
+import '../models/meal.dart';
 import '../items/main_drower.dart';
 import './favorite_screen.dart';
 import './categories_screen.dart';
 
 class TabScreen extends StatefulWidget {
+  final List<Meal> _favoriteMeal;
+
+  TabScreen(this._favoriteMeal);
+
   @override
   _TabScreenState createState() => _TabScreenState();
 }
 
 class _TabScreenState extends State<TabScreen> {
-  final List<Map<String, dynamic>> _pages = const [
-    {'page': CategoriesScreen(), 'title': 'Categories'},
-    {'page': FavoriteScreen(), 'title': 'Yout Favorites'}
-  ];
+  late List<Map<String, dynamic>> _pages;
   int _selectedPageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      {'page': const CategoriesScreen(), 'title': 'Categories'},
+      {'page': FavoriteScreen(widget._favoriteMeal), 'title': 'Yout Favorites'}
+    ];
+  }
 
   void _selectPAge(int index) {
     setState(() {
@@ -31,7 +42,7 @@ class _TabScreenState extends State<TabScreen> {
       body: _pages[_selectedPageIndex]['page'],
       bottomNavigationBar: BottomNavigationBar(
           onTap: _selectPAge,
-          backgroundColor: Theme.of(context).primaryColor,
+          // backgroundColor: Theme.of(context).colorScheme.fr,
           unselectedItemColor: Colors.white,
           selectedItemColor: Theme.of(context).colorScheme.secondary,
           currentIndex: _selectedPageIndex,
@@ -45,7 +56,7 @@ class _TabScreenState extends State<TabScreen> {
             BottomNavigationBarItem(
               backgroundColor: Theme.of(context).primaryColor,
               label: 'Favorites',
-              icon: const Icon(Icons.start),
+              icon: const Icon(Icons.favorite),
             ),
           ]),
     );

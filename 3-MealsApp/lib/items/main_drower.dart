@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meals_app/screens/filters_screen.dart';
+import '../screens/categories_screen.dart';
+import '../screens/filters_screen.dart';
 
 class MainDrower extends StatelessWidget {
   const MainDrower({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class MainDrower extends StatelessWidget {
         title,
         style: const TextStyle(
           fontFamily: 'RobotoCondensed',
-          fontSize: 24,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -45,14 +46,17 @@ class MainDrower extends StatelessWidget {
           _builderListTile(
             Icons.restaurant,
             'Meals',
-            () => {Navigator.of(context).pushNamed('/')},
+            () => {
+              Navigator.of(context)
+                  .pushReplacementNamed(CategoriesScreen.routeNameScreen)
+            },
           ),
           _builderListTile(
               Icons.settings,
               'Filters',
               () => {
                     Navigator.of(context)
-                        .pushNamed(FilterScreen.routeNameScreen)
+                        .pushReplacementNamed(FilterScreen.routeNameScreen)
                   }),
         ],
       ),

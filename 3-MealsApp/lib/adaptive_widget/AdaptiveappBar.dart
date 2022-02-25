@@ -8,11 +8,13 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final AppBar appBar;
   final List<Widget> widgets;
-  final Function? actionHandler;
+  final VoidCallback? actionHandler;
+  final IconData? iconData;
 
   /// you can add more fields that meet your needs
 
-  AdaptiveAppBar(this.title, this.appBar, this.widgets, [this.actionHandler]);
+  AdaptiveAppBar(this.title, this.appBar, this.widgets,
+      [this.actionHandler, this.iconData = Icons.add]);
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +27,8 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () => actionHandler!(),
-                  child: const Icon(CupertinoIcons.add),
+                  onTap: actionHandler,
+                  child: Icon(iconData),
                 ),
               ],
             ),
@@ -37,8 +39,8 @@ class AdaptiveAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             actions: [
               IconButton(
-                onPressed: () => actionHandler!(),
-                icon: const Icon(Icons.add),
+                onPressed: actionHandler,
+                icon: Icon(iconData),
               ),
             ],
           );

@@ -4,10 +4,18 @@ import '../models/meal.dart';
 
 class MealItem extends StatelessWidget {
   final Meal meal;
+  final Function deleteMealHandler;
 
   void selectMail(BuildContext context, Meal meal) {
     Navigator.of(context)
-        .pushNamed(MealDetailScreen.routeNameScreen, arguments: meal);
+        .pushNamed(MealDetailScreen.routeNameScreen, arguments: meal)
+        .then(
+      (value) {
+        if (value != null) {
+          deleteMealHandler(value);
+        }
+      },
+    );
   }
 
   String get complexityGet {
@@ -36,7 +44,7 @@ class MealItem extends StatelessWidget {
     }
   }
 
-  const MealItem({required this.meal, Key? key}) : super(key: key);
+  MealItem({required this.meal, required this.deleteMealHandler});
 
   @override
   Widget build(BuildContext context) {
