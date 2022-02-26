@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../models/meal.dart';
 import '../items/meal.item.dart';
@@ -48,15 +50,31 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
   // final String categoryId;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AdaptiveAppBar(categoryTitle!, AppBar(), []),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          return MealItem(
-              meal: displayedMeals![index], deleteMealHandler: _removeMeal);
-        },
-        itemCount: displayedMeals!.length,
-      ),
-    );
+    return Platform.isAndroid
+        ? Scaffold(
+            appBar: AdaptiveAppBar(Text(categoryTitle!), AppBar(), []),
+            body: ListView.builder(
+              itemBuilder: (context, index) {
+                return MealItem(
+                    meal: displayedMeals![index],
+                    deleteMealHandler: _removeMeal);
+              },
+              itemCount: displayedMeals!.length,
+            ),
+          )
+        : CupertinoPageScaffold(
+            navigationBar: CupertinoNavigationBar(
+              backgroundColor: Colors.white,
+              middle: Text(categoryTitle!),
+            ),
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return MealItem(
+                    meal: displayedMeals![index],
+                    deleteMealHandler: _removeMeal);
+              },
+              itemCount: displayedMeals!.length,
+            ),
+          );
   }
 }

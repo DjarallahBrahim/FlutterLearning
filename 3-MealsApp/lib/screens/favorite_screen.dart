@@ -8,9 +8,10 @@ class FavoriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(_favoriteMeal.length);
     if (_favoriteMeal.isEmpty) {
       return const Center(
-        child: Text('You have no favorite yet! - start adding some !'),
+        child: Text('YOU have no favorite yet! - start adding some !'),
       );
     } else {
       return ListView.builder(
