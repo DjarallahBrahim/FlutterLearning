@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:meals_app/adaptive_widget/AdaptiveappBar.dart';
+
 import '../models/meal.dart';
 import '../items/main_drower.dart';
 import './favorite_screen.dart';
@@ -21,7 +26,7 @@ class _TabScreenState extends State<TabScreen> {
   void initState() {
     super.initState();
     _pages = [
-      {'page': const CategoriesScreen(), 'title': 'Categories'},
+      {'page': CategoriesScreen(), 'title': 'Categories'},
       {'page': FavoriteScreen(widget._favoriteMeal), 'title': 'Yout Favorites'}
     ];
   }
@@ -32,33 +37,61 @@ class _TabScreenState extends State<TabScreen> {
     });
   }
 
+  Widget adaptiveTabBAr() {
+    return AdaptiveAppBar(
+        Text(_pages[_selectedPageIndex]['title']), AppBar(), []);
+  }
+
+  BottomNavigationBarItem bottomNavigationBarItemBuilder(
+      Color backGroundColor, String label, Widget icon) {
+    return BottomNavigationBarItem(
+      backgroundColor: backGroundColor,
+      label: label,
+      icon: icon,
+    );
+  }
+
+  Widget cupertinoTabScaffoldBuilder() {
+    return CupertinoTabScaffold(
+        tabBar: CupertinoTabBar(
+          items: [
+            bottomNavigationBarItemBuilder(Theme.of(context).primaryColor,
+                'Categories', const Icon(CupertinoIcons.create)),
+            bottomNavigationBarItemBuilder(Theme.of(context).primaryColor,
+                'Favorites', const Icon(CupertinoIcons.heart)),
+          ],
+        ),
+        tabBuilder: (BuildContext context, index) {
+          return _pages[index]['page'];
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_pages[_selectedPageIndex]['title']),
-      ),
-      drawer: MainDrower(),
-      body: _pages[_selectedPageIndex]['page'],
-      bottomNavigationBar: BottomNavigationBar(
-          onTap: _selectPAge,
-          // backgroundColor: Theme.of(context).colorScheme.fr,
-          unselectedItemColor: Colors.white,
-          selectedItemColor: Theme.of(context).colorScheme.secondary,
-          currentIndex: _selectedPageIndex,
-          type: BottomNavigationBarType.shifting,
-          items: [
-            BottomNavigationBarItem(
-              backgroundColor: Theme.of(context).primaryColor,
-              label: 'Categories',
-              icon: const Icon(Icons.category),
+    return Platform.isAndroid
+        ? Scaffold(
+            appBar: adaptiveTabBAr() as PreferredSizeWidget,
+            drawer: MainDrower(),
+            body: _pages[_selectedPageIndex]['page'],
+            bottomNavigationBar: BottomNavigationBar(
+                onTap: _selectPAge,
+                // backgroundColor: Theme.of(context).colorScheme.fr,
+                unselectedItemColor: Colors.white,
+                selectedItemColor: Theme.of(context).colorScheme.secondary,
+                currentIndex: _selectedPageIndex,
+                type: BottomNavigationBarType.shifting,
+                items: [
+                  bottomNavigationBarItemBuilder(Theme.of(context).primaryColor,
+                      'Categories', const Icon(Icons.category)),
+                  bottomNavigationBarItemBuilder(Theme.of(context).primaryColor,
+                      'Favorites', const Icon(Icons.favorite)),
+                ]),
+          )
+        : CupertinoPageScaffold(
+            navigationBar: CupertinoNavigationBar(
+              backgroundColor: Colors.white,
+              middle: Text(_pages[_selectedPageIndex]['title']),
             ),
-            BottomNavigationBarItem(
-              backgroundColor: Theme.of(context).primaryColor,
-              label: 'Favorites',
-              icon: const Icon(Icons.favorite),
-            ),
-          ]),
-    );
+            child: cupertinoTabScaffoldBuilder());
   }
 }

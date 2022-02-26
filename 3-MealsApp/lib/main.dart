@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
             primary: const Color.fromARGB(237, 177, 15, 69),
           ),
           primarySwatch: Colors.pink,
-          canvasColor: const Color.fromARGB(255, 239, 240, 241),
+          canvasColor: Colors.white,
           fontFamily: 'Raleway',
           //   textTheme: ThemeData.light()
           //       .textTheme
