@@ -50,7 +50,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 value: cart.itemCount.toString(),
                 color: Colors.red),
             child: IconButton(
-              icon: Icon(Icons.shopping_cart),
+              icon:const  Icon(Icons.shopping_cart),
               onPressed: () =>
                   {Navigator.of(context).pushNamed(CartScreen.routName)},
             ),

@@ -36,9 +36,9 @@ class Orders with ChangeNotifier {
 
   double get totalAmount {
     var total = 0.0;
-    orders.forEach((element) {
+    for (var element in orders) {
       total += element.amount;
-    });
+    }
     return total;
   }
 }
