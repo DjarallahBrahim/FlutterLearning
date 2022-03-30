@@ -11,7 +11,6 @@ class OrderItem extends StatefulWidget {
   @override
   State<OrderItem> createState() => _OrderItemState();
 }
-
 class _OrderItemState extends State<OrderItem> {
   var _expanded = false;
   @override
