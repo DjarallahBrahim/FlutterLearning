@@ -7,10 +7,42 @@ import '../../../common/app_colors.dart';
 import '../../../helpers/Sizeconfig.dart';
 
 class ActionItem extends StatelessWidget {
-  final String _title;
-  final String _imageAssets;
+  final String title;
+  final String imageAssets;
+  final String actionType;
 
-  ActionItem(this._title, this._imageAssets);
+  ActionItem(
+      {required this.title,
+      required this.imageAssets,
+      required this.actionType});
+  Future<void> _showMyDialog(context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColor.bgColor,
+          title: Text('la fonctionnalité $title sera bientôt disponible'),
+          // content: SingleChildScrollView(
+          //   child: ListBody(
+          //     children: const <Widget>[
+          //       Text('This is a demo alert dialog.'),
+          //       Text('Would you like to approve of this message?'),
+          //     ],
+          //   ),
+          // ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +51,13 @@ class ActionItem extends StatelessWidget {
     // final cart = Provider.of<Cart>(context, listen: false);
     // final authData = Provider.of<Auth>(context, listen: false);
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(FormPage.routeName),
+      onTap: () {
+        if (actionType == 'add')
+          // Navigator.of(context).pushNamed(FormPage.routeName);
+          Navigator.of(context).pushNamed(FormPage.routeName);
+        else
+          _showMyDialog(context);
+      },
       child: Card(
           color: AppColor.blue,
           elevation: 15,
@@ -33,7 +71,7 @@ class ActionItem extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
                   image: DecorationImage(
-                image: AssetImage(_imageAssets),
+                image: AssetImage(imageAssets),
                 fit: BoxFit.contain,
                 alignment: Alignment.topRight,
               )),
@@ -51,7 +89,7 @@ class ActionItem extends StatelessWidget {
                               topRight: Radius.circular(20),
                               bottomRight: Radius.circular(20))),
                       child: Text(
-                        _title,
+                        title,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: SizeConfig.safeBlockHorizontal * 1.5,

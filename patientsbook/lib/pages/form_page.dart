@@ -9,14 +9,19 @@ class FormPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.bgColor,
-      appBar: AppBar(title: Text("Ajouter")),
+      appBar: AppBar(
+          title:const Text("Ajouter"),
+          backgroundColor: AppColor.bgColor,
+          foregroundColor: Colors.black),
       body: SafeArea(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            /// Main Body Part
-            SingleChildScrollView(child: FormPatient()),
-          ],
+        child: SingleChildScrollView(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              /// Main Body Part
+              FormPatient(),
+            ],
+          ),
         ),
       ),
     );

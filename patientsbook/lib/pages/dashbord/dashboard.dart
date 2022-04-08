@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:patientsbook/pages/dashbord/widgets/patientItem.dart';
 import 'package:patientsbook/pages/dashbord/widgets/userActions.dart';
 // import 'package:patientsbook/pages/dashbord/widgets/card_item.dart';
 import 'package:patientsbook/pages/dashbord/widgets/header_widget.dart';
-import 'package:patientsbook/pages/dashbord/widgets/notification_card_widget.dart';
 import 'package:patientsbook/pages/dashbord/widgets/profile_card_widget.dart';
-import 'package:patientsbook/pages/dashbord/widgets/recruitment_data_widget.dart';
 
 import '../../common/app_colors.dart';
-import '../../common/app_responsive.dart';
 import '../../helpers/Sizeconfig.dart';
 
 class Dashboard extends StatefulWidget {
@@ -30,7 +28,7 @@ class _DashboardState extends State<Dashboard> {
         children: [
           /// Header Part
           HeaderWidget(),
-         
+
           Expanded(
             child: SingleChildScrollView(
               child: Row(
@@ -49,9 +47,9 @@ class _DashboardState extends State<Dashboard> {
                           Container(
                               child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(flex: 2, child: RecruitmentDataWidget()),
+                              Expanded(flex: 2, child: PatientItem()),
                               SizedBox(
                                   width: SizeConfig.safeBlockHorizontal * 10),
                               Expanded(flex: 1, child: ProfileCardWidget()),

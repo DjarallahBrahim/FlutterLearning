@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../models/patients.dart';
 
 class ProfileCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final patientsData = Provider.of<Patients>(context);
     return Container(
       decoration: BoxDecoration(
         color: AppColor.white,
@@ -18,7 +21,7 @@ class ProfileCardWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(1000),
                 child: Image.asset(
-                  "assets/user1.jpg",
+                  "assets/doctor.png",
                   height: 60,
                   width: 60,
                 ),
@@ -27,10 +30,10 @@ class ProfileCardWidget extends StatelessWidget {
               Column(
                 children: const [
                   Text(
-                    "Kathy Walker",
+                    "DR. Nom Prénom ",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text("HR Manager"),
+                  Text("Doctor en ####"),
                 ],
               )
             ],
@@ -39,9 +42,11 @@ class ProfileCardWidget extends StatelessWidget {
             thickness: 0.5,
             color: Colors.grey,
           ),
-          profileListTile("Joined Date", "18-Apr-2021"),
-          profileListTile("Projects", "32 Active"),
-          profileListTile("Accomplishment", "125"),
+          profileListTile(
+              "Nombre de patients", patientsData.patientItem.length.toString()),
+          profileListTile("Ajoutés cette semaine",
+              patientsData.patientItem.length.toString()),
+          // profileListTile("Accomplishment", "125"),
         ],
       ),
     );
