@@ -22,14 +22,13 @@ class Patients with ChangeNotifier {
       "Ce ci est un diagnostic de type ****",
     ),
     patient(
-        "2",
-        "Abdou",
-        "Sam",
-        "Homme",
-        DateTime.parse("1995-05-12"),
-        DateTime.now(),
-        null,
-         "Ce ci est un diagnostic de type ****",
+      "2",
+      "Abdou",
+      "Sam",
+      "Homme",
+      DateTime.parse("1995-05-12"),
+      DateTime.now(),
+      null,
       "Ce ci est un diagnostic de type ****",
       "Ce ci est un diagnostic de type ****",
       "Ce ci est un diagnostic de type ****",
@@ -37,7 +36,9 @@ class Patients with ChangeNotifier {
       "Ce ci est un diagnostic de type ****",
       "Ce ci est un diagnostic de type ****",
       "Ce ci est un diagnostic de type ****",
-       )];
+      "Ce ci est un diagnostic de type ****",
+    )
+  ];
 
   List<patient> get patientItem {
     return [..._patientItem];

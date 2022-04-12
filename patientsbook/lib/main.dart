@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:patientsbook/common/app_colors.dart';
+import 'package:patientsbook/database/isar_database.dart.dart';
 import 'package:patientsbook/models/patients.dart';
 import 'package:patientsbook/pages/form_page.dart';
 import 'package:patientsbook/pages/home_page.dart';
@@ -12,13 +16,22 @@ import 'package:window_size/window_size.dart';
 import 'controllers/menu_controller.dart';
 import 'dart:io';
 
-import 'helpers/Sizeconfig.dart';
-
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows) {
     setWindowMinSize(const Size(1000, 1000));
   }
+  Isar isar = await Isar.open(
+    schemas: [PastientDatasSchema],
+    directory: (await getApplicationDocumentsDirectory()).path,
+  );
+  print((await getApplicationDocumentsDirectory()).path);
+  final patientDAtaBase = isar.pastientDatass;
+
+  GetIt locator = GetIt.instance;
+  locator.registerSingleton<IsarCollection<PastientDatas>>(patientDAtaBase);
+  locator.registerSingleton<Isar>(isar);
+
   runApp(
     MultiProvider(
       providers: [
@@ -54,7 +67,7 @@ class MyApp extends StatelessWidget {
                 minThumbLength: 50)),
         home: SplashScreenView(
           navigateRoute: HomePage(),
-          duration: 4000,
+          duration: 1000,
           imageSize: 512,
 
           imageSrc: "assets/logo.png",

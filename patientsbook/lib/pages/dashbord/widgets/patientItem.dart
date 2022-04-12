@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:isar/isar.dart';
+import 'package:patientsbook/database/isar_database.dart.dart';
 import 'package:patientsbook/pages/patientDetail_page.dart';
 import 'package:provider/provider.dart';
 
@@ -15,9 +18,57 @@ class PatientItem extends StatefulWidget {
 }
 
 class _PatientItemWidgetState extends State<PatientItem> {
+  bool _isinit = true;
+  late Isar isarBDD;
+  var firstForthPatient = [];
+  Stream<void>? patientWatcher;
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (_isinit) {
+      GetIt locator = GetIt.instance;
+      isarBDD = locator<Isar>();
+      patientWatcher = isarBDD.pastientDatass.watchLazy();
+      var resultQuerry =
+          await isarBDD.pastientDatass.where().limit(10).findAll();
+
+      patientWatcher?.listen((pastientDatass) async {
+        resultQuerry = await isarBDD.pastientDatass.where().limit(10).findAll();
+        setState(() {
+          firstForthPatient = resultQuerry;
+        });
+      });
+
+      setState(() {
+        firstForthPatient = resultQuerry;
+        _isinit = !_isinit;
+      });
+    }
+  }
+
+  // void getPatientFromBDD() async {
+  //   // if (_isinit) {
+  //   GetIt locator = GetIt.instance;
+  //   isarBDD = locator<Isar>();
+  //   patientWatcher = isarBDD.pastientDatass.watchLazy();
+  //   patientWatcher?.listen((pastientDatass) {
+  //     print('A User changed');
+  //     setState(() {});
+  //   });
+
+  //   final resultQuerry =
+  //       await isarBDD.pastientDatass.where().limit(10).findAll();
+  //   setState(() {
+  //     firstForthPatient = resultQuerry;
+  //     // _isinit = false;
+  //   });
+  //   // }
+  // }
+
   @override
   Widget build(BuildContext context) {
     final patientsData = Provider.of<Patients>(context, listen: true);
+
     return Card(
       color: AppColor.white,
       elevation: 15,
@@ -63,34 +114,45 @@ class _PatientItemWidgetState extends State<PatientItem> {
               thickness: 0.5,
               color: Colors.grey,
             ),
-            Table(
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              children: [
-                /// Table Header
-                TableRow(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                      color: Colors.grey,
-                      width: 0.5,
-                    )),
-                  ),
-                  children: [
-                    tableHeader("Nom Prénom"),
-                    if (!AppResponsive.isMobile(context))
-                      tableHeader("Date d'entré"),
-                    tableHeader("Status"),
-                    // if (!AppResponsive.isMobile(context)) tableHeader(""),
-                    //     ListView.builder(
-                    // itemBuilder: (ctx, index) => tableRowCustom(ctx, patientsData.patientItem[index]),
-                    // itemCount: patientsData.patientItem.length,)
-                  ],
-                ),
+            firstForthPatient.length > 0
+                ? Table(
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                    children: [
+                      /// Table Header
+                      TableRow(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                            color: Colors.grey,
+                            width: 0.5,
+                          )),
+                        ),
+                        children: [
+                          tableHeader("Nom Prénom"),
+                          if (!AppResponsive.isMobile(context))
+                            tableHeader("Date d'entré"),
+                          tableHeader("Status"),
+                          // if (!AppResponsive.isMobile(context)) tableHeader(""),
+                          //     ListView.builder(
+                          // itemBuilder: (ctx, index) => tableRowCustom(ctx, patientsData.patientItem[index]),
+                          // itemCount: patientsData.patientItem.length,)
+                        ],
+                      ),
 
-                for (patient pt in patientsData.patientItem)
-                  tableRowCustom(context, pt),
-              ],
-            ),
+                      for (PastientDatas pt in firstForthPatient)
+                        tableRowCustom(context, pt),
+                    ],
+                  )
+                : const Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Aucun patient sauvegardé!',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
+                    ),
+                  ),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
@@ -169,7 +231,7 @@ class _PatientItemWidgetState extends State<PatientItem> {
         ]);
   }
 
-  TableRow tableRowCustom(context, patient patientData) {
+  TableRow tableRowCustom(context, PastientDatas patientData) {
     var formatter = DateFormat('yyyy-MM-dd');
     return TableRow(
         decoration: const BoxDecoration(
@@ -194,7 +256,7 @@ class _PatientItemWidgetState extends State<PatientItem> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(1000),
                     child: Image.asset(
-                      patientData.sex.toLowerCase() == "homme"
+                      patientData.sexe.toLowerCase() == "homme"
                           ? "assets/homme.png"
                           : "assets/femme.png",
                       width: 30,

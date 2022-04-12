@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "PatientBook"
-#define MyAppVersion "0.1"
+#define MyAppVersion "0.3"
 #define MyAppPublisher "djarallah"
 #define MyAppExeName "patientsbook.exe"
 
@@ -35,6 +35,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "C:\Users\djara\Desktop\Work\programmation\Flatter\projets\FlutterLearning\patientsbook\build\windows\runner\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\djara\Desktop\Work\programmation\Flatter\projets\FlutterLearning\patientsbook\build\windows\runner\Release\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\djara\Desktop\Work\programmation\Flatter\projets\FlutterLearning\patientsbook\build\windows\runner\Release\msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\djara\Desktop\Work\programmation\Flatter\projets\FlutterLearning\patientsbook\build\windows\runner\Release\isar_flutter_libs_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\djara\Desktop\Work\programmation\Flatter\projets\FlutterLearning\patientsbook\build\windows\runner\Release\isar.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\djara\Desktop\Work\programmation\Flatter\projets\FlutterLearning\patientsbook\build\windows\runner\Release\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\djara\Desktop\Work\programmation\Flatter\projets\FlutterLearning\patientsbook\build\windows\runner\Release\vcruntime140_1.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\djara\Desktop\Work\programmation\Flatter\projets\FlutterLearning\patientsbook\build\windows\runner\Release\window_size_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion

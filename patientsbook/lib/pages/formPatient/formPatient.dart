@@ -3,7 +3,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:isar/isar.dart';
+import 'package:patientsbook/database/isar_database.dart.dart';
 import 'package:patientsbook/models/patient.dart';
 import 'package:patientsbook/models/patients.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +20,9 @@ class FormPatient extends StatefulWidget {
 }
 
 class _FormPatientState extends State<FormPatient> {
+  //DATAbase
+  late IsarCollection<PastientDatas> pastientDatas;
+  late Isar isarBDD;
   //form global key
   final _formGlobalKey = GlobalKey<FormState>();
 
@@ -41,7 +47,9 @@ class _FormPatientState extends State<FormPatient> {
   var sexPAtient;
   DateFormat formatter = DateFormat('yyyy/MM/dd');
   late patient _initPatient;
+  PastientDatas? patientFromBDD;
 
+  //TODO delete this
   var _initValue = {
     'id': '',
     'nom': '',
@@ -58,6 +66,7 @@ class _FormPatientState extends State<FormPatient> {
     'scoreClassification': '',
     'traitement': '',
   };
+  //TODO delete this
   var _newPatient = {
     'id': '',
     'nom': '',
@@ -100,89 +109,123 @@ class _FormPatientState extends State<FormPatient> {
     }
   }
 
-  Future<void> _saveForm() async {
-    var _nvpatient = patient(
-      patientId ??
-          Provider.of<Patients>(context, listen: false)
-              .newIdentificateur
-              .toString(),
-      _nomController.text,
-      _prenoController.text,
-      sexPAtient,
-      formatter.parse(_naissanceDateController.text),
-      formatter.parse(_enterDateController.text),
-      _exiteDateController.text.isNotEmpty
+  _saveForm() async {
+    // var _nvpatient = patient(
+    //   patientId ??
+    //       Provider.of<Patients>(context, listen: false)
+    //           .newIdentificateur
+    //           .toString(),
+    //   _nomController.text,
+    //   _prenoController.text,
+    //   sexPAtient,
+    //   formatter.parse(_naissanceDateController.text),
+    //   formatter.parse(_enterDateController.text),
+    //   _exiteDateController.text.isNotEmpty
+    //       ? formatter.parse(_exiteDateController.text)
+    //       : null,
+    //   _diagnosticController.text,
+    //   _signeCliniqueController.text,
+    //   _protocolDateController.text,
+    //   _suitePostOperatoireController.text,
+    //   _anticedentsController.text,
+    //   _scoreClassificationController.text,
+    //   _traitementController.text,
+    //   _examanParacliniqueController.text,
+    // );
+    // await Provider.of<Patients>(context, listen: false).addPatient(_nvpatient);
+    final newPastientData = PastientDatas()
+      ..id = patientFromBDD?.id
+      ..nom = _nomController.text
+      ..prenom = _prenoController.text
+      ..sexe = sexPAtient
+      ..dateNaissance = formatter.parse(_naissanceDateController.text)
+      ..dateEntre = formatter.parse(_enterDateController.text)
+      ..dateSortie = _exiteDateController.text.isNotEmpty
           ? formatter.parse(_exiteDateController.text)
-          : null,
-      _diagnosticController.text,
-      _signeCliniqueController.text,
-      _protocolDateController.text,
-      _suitePostOperatoireController.text,
-      _anticedentsController.text,
-      _scoreClassificationController.text,
-      _traitementController.text,
-      _examanParacliniqueController.text,
-    );
-    await Provider.of<Patients>(context, listen: false).addPatient(_nvpatient);
+          : null
+      ..diagnostic = _diagnosticController.text
+      ..signeCliniques = _signeCliniqueController.text
+      ..protocolParaclinique = _protocolDateController.text
+      ..suitePostOperatoire = _suitePostOperatoireController.text
+      ..anticedents = _anticedentsController.text
+      ..scoreClassification = _scoreClassificationController.text
+      ..traitement = _traitementController.text
+      ..examenParaclinique = _examanParacliniqueController.text;
+
+    // Isar isar = Isar();
+
+    await isarBDD.writeTxn((isarBDD) async {
+      await isarBDD.pastientDatass.put(newPastientData);
+    });
+    Navigator.of(context).pop();
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
     if (_isinit) {
+      GetIt locator = GetIt.instance;
+      pastientDatas = locator<IsarCollection<PastientDatas>>();
+      isarBDD = locator<Isar>();
+
       var arguments = ModalRoute.of(context)!.settings.arguments;
-      var pageType;
       if (arguments != null) {
         setState(() {
           patientId = arguments;
         });
       }
       if (patientId != null) {
-        _initPatient = Provider.of<Patients>(context, listen: false)
-            .findById(patientId as String);
-        _initValue = {
-          'id': _initPatient.id,
-          'nom': _initPatient.nom,
-          'prenom': _initPatient.prenom,
-          'sex': _initPatient.sex,
-          'dateNaissance': _initPatient.dateNaissance.toString(),
-          'dateEntre': _initPatient.dateEntre.toString(),
-          'dateSortie': _initPatient.dateSortie != null
-              ? _initPatient.dateSortie.toString()
-              : '',
-          'diagnostic': _initPatient.diagnostic,
-          'signeCliniques': _initPatient.signeCliniques,
-          'protocolParaclinique': _initPatient.protocolParaclinique,
-          'suitePostOperatoire': _initPatient.suitePostOperatoire,
-          'anticedents': _initPatient.anticedents,
-          'scoreClassification': _initPatient.scoreClassification,
-          'traitement': _initPatient.traitement,
-        };
-        _nomController.text = _initPatient.nom;
-        _prenoController.text = _initPatient.prenom;
-        _naissanceDateController.text =
-            formatter.format(_initPatient.dateNaissance).toString();
-        _enterDateController.text =
-            formatter.format(_initPatient.dateEntre).toString();
-        _exiteDateController.text = _initPatient.dateSortie != null
-            ? formatter.format(_initPatient.dateSortie!).toString()
-            : '';
-        _diagnosticController.text = _initPatient.diagnostic;
-        _signeCliniqueController.text = _initPatient.signeCliniques;
-        _protocolDateController.text = _initPatient.protocolParaclinique;
-        _suitePostOperatoireController.text = _initPatient.suitePostOperatoire;
-        _anticedentsController.text = _initPatient.anticedents;
-        _scoreClassificationController.text = _initPatient.scoreClassification;
-        _traitementController.text = _initPatient.traitement;
-        _examanParacliniqueController.text = _initPatient.examenParaclinique;
-        setState(() {
-          sexPAtient = _initPatient.sex;
-        });
+        // _initPatient = Provider.of<Patients>(context, listen: false)
+        //     .findById(patientId as String);
+        patientFromBDD = await isarBDD.pastientDatass.get(patientId);
+        // _initValue = {
+        //   'id': _initPatient.id,
+        //   'nom': _initPatient.nom,
+        //   'prenom': _initPatient.prenom,
+        //   'sex': _initPatient.sex,
+        //   'dateNaissance': _initPatient.dateNaissance.toString(),
+        //   'dateEntre': _initPatient.dateEntre.toString(),
+        //   'dateSortie': _initPatient.dateSortie != null
+        //       ? _initPatient.dateSortie.toString()
+        //       : '',
+        //   'diagnostic': _initPatient.diagnostic,
+        //   'signeCliniques': _initPatient.signeCliniques,
+        //   'protocolParaclinique': _initPatient.protocolParaclinique,
+        //   'suitePostOperatoire': _initPatient.suitePostOperatoire,
+        //   'anticedents': _initPatient.anticedents,
+        //   'scoreClassification': _initPatient.scoreClassification,
+        //   'traitement': _initPatient.traitement,
+        // };
+        if (patientFromBDD != null) {
+          _nomController.text = patientFromBDD!.nom;
+          _prenoController.text = patientFromBDD!.prenom;
+          _naissanceDateController.text =
+              formatter.format(patientFromBDD!.dateNaissance).toString();
+          _enterDateController.text =
+              formatter.format(patientFromBDD!.dateEntre).toString();
+          _exiteDateController.text = patientFromBDD!.dateSortie != null
+              ? formatter.format(patientFromBDD!.dateSortie!).toString()
+              : '';
+          _diagnosticController.text = patientFromBDD!.diagnostic;
+          _signeCliniqueController.text = patientFromBDD!.signeCliniques;
+          _protocolDateController.text = patientFromBDD!.protocolParaclinique;
+          _suitePostOperatoireController.text =
+              patientFromBDD!.suitePostOperatoire;
+          _anticedentsController.text = patientFromBDD!.anticedents;
+          _scoreClassificationController.text =
+              patientFromBDD!.scoreClassification;
+          _traitementController.text = patientFromBDD!.traitement;
+          _examanParacliniqueController.text =
+              patientFromBDD!.examenParaclinique;
+          setState(() {
+            sexPAtient = patientFromBDD!.sexe;
+          });
+        }
       }
+      setState(() {
+        _isinit = false;
+      });
     }
-    setState(() {
-      _isinit = false;
-    });
   }
 
   @override
@@ -226,7 +269,7 @@ class _FormPatientState extends State<FormPatient> {
                               ),
                             ),
                             Text(
-                              '#${(_initValue['id'] != null && _initValue['id']!.isNotEmpty) ? _initValue['id'] : patientDataProvider.newIdentificateur}',
+                              '#${(patientFromBDD?.id != null) ? patientFromBDD?.id : 'X'}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: AppColor.black,
@@ -301,7 +344,7 @@ class _FormPatientState extends State<FormPatient> {
                               ),
                             ),
                             Text(
-                              '#${(_initValue['id'] != null && _initValue['id']!.isNotEmpty) ? _initValue['id'] : patientDataProvider.newIdentificateur}',
+                              '#${(patientFromBDD?.id != null) ? patientFromBDD?.id : 'X'}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: AppColor.black,
@@ -425,7 +468,6 @@ class _FormPatientState extends State<FormPatient> {
       dropdownColor: AppColor.white,
       onChanged: (String? newValue) {
         setState(() {
-          _newPatient['sex'] = newValue!;
           sexPAtient = newValue;
         });
       },

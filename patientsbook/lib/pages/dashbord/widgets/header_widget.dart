@@ -29,7 +29,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           //   ),
           const Spacer(),
           const Text(
-            "CHU-PATIENTS",
+            "CHU BENFLIS TOUHAMI DE BATNA",
             style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.bold,
