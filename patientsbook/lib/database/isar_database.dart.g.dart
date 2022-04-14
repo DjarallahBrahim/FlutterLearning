@@ -17,29 +17,34 @@ extension GetPastientDatasCollection on Isar {
 final PastientDatasSchema = CollectionSchema(
   name: 'PastientDatas',
   schema:
-      '{"name":"PastientDatas","idName":"id","properties":[{"name":"anticedents","type":"String"},{"name":"dateEntre","type":"Long"},{"name":"dateNaissance","type":"Long"},{"name":"dateSortie","type":"Long"},{"name":"diagnostic","type":"String"},{"name":"examenParaclinique","type":"String"},{"name":"nom","type":"String"},{"name":"prenom","type":"String"},{"name":"protocolParaclinique","type":"String"},{"name":"scoreClassification","type":"String"},{"name":"sexe","type":"String"},{"name":"signeCliniques","type":"String"},{"name":"suitePostOperatoire","type":"String"},{"name":"traitement","type":"String"}],"indexes":[],"links":[]}',
+      '{"name":"PastientDatas","idName":"id","properties":[{"name":"NameWords","type":"StringList"},{"name":"anticedents","type":"String"},{"name":"dateEntre","type":"Long"},{"name":"dateNaissance","type":"Long"},{"name":"dateSortie","type":"Long"},{"name":"diagnostic","type":"String"},{"name":"examenParaclinique","type":"String"},{"name":"nom","type":"String"},{"name":"prenom","type":"String"},{"name":"protocolParaclinique","type":"String"},{"name":"scoreClassification","type":"String"},{"name":"sexe","type":"String"},{"name":"signeCliniques","type":"String"},{"name":"suitePostOperatoire","type":"String"},{"name":"traitement","type":"String"}],"indexes":[{"name":"NameWords","unique":false,"properties":[{"name":"NameWords","type":"Value","caseSensitive":false}]}],"links":[]}',
   nativeAdapter: const _PastientDatasNativeAdapter(),
   webAdapter: const _PastientDatasWebAdapter(),
   idName: 'id',
   propertyIds: {
-    'anticedents': 0,
-    'dateEntre': 1,
-    'dateNaissance': 2,
-    'dateSortie': 3,
-    'diagnostic': 4,
-    'examenParaclinique': 5,
-    'nom': 6,
-    'prenom': 7,
-    'protocolParaclinique': 8,
-    'scoreClassification': 9,
-    'sexe': 10,
-    'signeCliniques': 11,
-    'suitePostOperatoire': 12,
-    'traitement': 13
+    'NameWords': 0,
+    'anticedents': 1,
+    'dateEntre': 2,
+    'dateNaissance': 3,
+    'dateSortie': 4,
+    'diagnostic': 5,
+    'examenParaclinique': 6,
+    'nom': 7,
+    'prenom': 8,
+    'protocolParaclinique': 9,
+    'scoreClassification': 10,
+    'sexe': 11,
+    'signeCliniques': 12,
+    'suitePostOperatoire': 13,
+    'traitement': 14
   },
-  listProperties: {},
-  indexIds: {},
-  indexTypes: {},
+  listProperties: {'NameWords'},
+  indexIds: {'NameWords': 0},
+  indexTypes: {
+    'NameWords': [
+      NativeIndexType.stringCIS,
+    ]
+  },
   linkIds: {},
   backlinkIds: {},
   linkedCollections: [],
@@ -62,6 +67,7 @@ class _PastientDatasWebAdapter extends IsarWebTypeAdapter<PastientDatas> {
   Object serialize(
       IsarCollection<PastientDatas> collection, PastientDatas object) {
     final jsObj = IsarNative.newJsObject();
+    IsarNative.jsObjectSet(jsObj, 'NameWords', object.NameWords);
     IsarNative.jsObjectSet(jsObj, 'anticedents', object.anticedents);
     IsarNative.jsObjectSet(
         jsObj, 'dateEntre', object.dateEntre.toUtc().millisecondsSinceEpoch);
@@ -133,6 +139,12 @@ class _PastientDatasWebAdapter extends IsarWebTypeAdapter<PastientDatas> {
   @override
   P deserializeProperty<P>(Object jsObj, String propertyName) {
     switch (propertyName) {
+      case 'NameWords':
+        return ((IsarNative.jsObjectGet(jsObj, 'NameWords') as List?)
+                ?.map((e) => e ?? '')
+                .toList()
+                .cast<String>() ??
+            []) as P;
       case 'anticedents':
         return (IsarNative.jsObjectGet(jsObj, 'anticedents') ?? '') as P;
       case 'dateEntre':
@@ -202,44 +214,53 @@ class _PastientDatasNativeAdapter extends IsarNativeTypeAdapter<PastientDatas> {
       List<int> offsets,
       AdapterAlloc alloc) {
     var dynamicSize = 0;
-    final value0 = object.anticedents;
-    final _anticedents = IsarBinaryWriter.utf8Encoder.convert(value0);
+    final value0 = object.NameWords;
+    dynamicSize += (value0.length) * 8;
+    final bytesList0 = <IsarUint8List>[];
+    for (var str in value0) {
+      final bytes = IsarBinaryWriter.utf8Encoder.convert(str);
+      bytesList0.add(bytes);
+      dynamicSize += bytes.length as int;
+    }
+    final _NameWords = bytesList0;
+    final value1 = object.anticedents;
+    final _anticedents = IsarBinaryWriter.utf8Encoder.convert(value1);
     dynamicSize += (_anticedents.length) as int;
-    final value1 = object.dateEntre;
-    final _dateEntre = value1;
-    final value2 = object.dateNaissance;
-    final _dateNaissance = value2;
-    final value3 = object.dateSortie;
-    final _dateSortie = value3;
-    final value4 = object.diagnostic;
-    final _diagnostic = IsarBinaryWriter.utf8Encoder.convert(value4);
+    final value2 = object.dateEntre;
+    final _dateEntre = value2;
+    final value3 = object.dateNaissance;
+    final _dateNaissance = value3;
+    final value4 = object.dateSortie;
+    final _dateSortie = value4;
+    final value5 = object.diagnostic;
+    final _diagnostic = IsarBinaryWriter.utf8Encoder.convert(value5);
     dynamicSize += (_diagnostic.length) as int;
-    final value5 = object.examenParaclinique;
-    final _examenParaclinique = IsarBinaryWriter.utf8Encoder.convert(value5);
+    final value6 = object.examenParaclinique;
+    final _examenParaclinique = IsarBinaryWriter.utf8Encoder.convert(value6);
     dynamicSize += (_examenParaclinique.length) as int;
-    final value6 = object.nom;
-    final _nom = IsarBinaryWriter.utf8Encoder.convert(value6);
+    final value7 = object.nom;
+    final _nom = IsarBinaryWriter.utf8Encoder.convert(value7);
     dynamicSize += (_nom.length) as int;
-    final value7 = object.prenom;
-    final _prenom = IsarBinaryWriter.utf8Encoder.convert(value7);
+    final value8 = object.prenom;
+    final _prenom = IsarBinaryWriter.utf8Encoder.convert(value8);
     dynamicSize += (_prenom.length) as int;
-    final value8 = object.protocolParaclinique;
-    final _protocolParaclinique = IsarBinaryWriter.utf8Encoder.convert(value8);
+    final value9 = object.protocolParaclinique;
+    final _protocolParaclinique = IsarBinaryWriter.utf8Encoder.convert(value9);
     dynamicSize += (_protocolParaclinique.length) as int;
-    final value9 = object.scoreClassification;
-    final _scoreClassification = IsarBinaryWriter.utf8Encoder.convert(value9);
+    final value10 = object.scoreClassification;
+    final _scoreClassification = IsarBinaryWriter.utf8Encoder.convert(value10);
     dynamicSize += (_scoreClassification.length) as int;
-    final value10 = object.sexe;
-    final _sexe = IsarBinaryWriter.utf8Encoder.convert(value10);
+    final value11 = object.sexe;
+    final _sexe = IsarBinaryWriter.utf8Encoder.convert(value11);
     dynamicSize += (_sexe.length) as int;
-    final value11 = object.signeCliniques;
-    final _signeCliniques = IsarBinaryWriter.utf8Encoder.convert(value11);
+    final value12 = object.signeCliniques;
+    final _signeCliniques = IsarBinaryWriter.utf8Encoder.convert(value12);
     dynamicSize += (_signeCliniques.length) as int;
-    final value12 = object.suitePostOperatoire;
-    final _suitePostOperatoire = IsarBinaryWriter.utf8Encoder.convert(value12);
+    final value13 = object.suitePostOperatoire;
+    final _suitePostOperatoire = IsarBinaryWriter.utf8Encoder.convert(value13);
     dynamicSize += (_suitePostOperatoire.length) as int;
-    final value13 = object.traitement;
-    final _traitement = IsarBinaryWriter.utf8Encoder.convert(value13);
+    final value14 = object.traitement;
+    final _traitement = IsarBinaryWriter.utf8Encoder.convert(value14);
     dynamicSize += (_traitement.length) as int;
     final size = staticSize + dynamicSize;
 
@@ -247,41 +268,42 @@ class _PastientDatasNativeAdapter extends IsarNativeTypeAdapter<PastientDatas> {
     rawObj.buffer_length = size;
     final buffer = IsarNative.bufAsBytes(rawObj.buffer, size);
     final writer = IsarBinaryWriter(buffer, staticSize);
-    writer.writeBytes(offsets[0], _anticedents);
-    writer.writeDateTime(offsets[1], _dateEntre);
-    writer.writeDateTime(offsets[2], _dateNaissance);
-    writer.writeDateTime(offsets[3], _dateSortie);
-    writer.writeBytes(offsets[4], _diagnostic);
-    writer.writeBytes(offsets[5], _examenParaclinique);
-    writer.writeBytes(offsets[6], _nom);
-    writer.writeBytes(offsets[7], _prenom);
-    writer.writeBytes(offsets[8], _protocolParaclinique);
-    writer.writeBytes(offsets[9], _scoreClassification);
-    writer.writeBytes(offsets[10], _sexe);
-    writer.writeBytes(offsets[11], _signeCliniques);
-    writer.writeBytes(offsets[12], _suitePostOperatoire);
-    writer.writeBytes(offsets[13], _traitement);
+    writer.writeStringList(offsets[0], _NameWords);
+    writer.writeBytes(offsets[1], _anticedents);
+    writer.writeDateTime(offsets[2], _dateEntre);
+    writer.writeDateTime(offsets[3], _dateNaissance);
+    writer.writeDateTime(offsets[4], _dateSortie);
+    writer.writeBytes(offsets[5], _diagnostic);
+    writer.writeBytes(offsets[6], _examenParaclinique);
+    writer.writeBytes(offsets[7], _nom);
+    writer.writeBytes(offsets[8], _prenom);
+    writer.writeBytes(offsets[9], _protocolParaclinique);
+    writer.writeBytes(offsets[10], _scoreClassification);
+    writer.writeBytes(offsets[11], _sexe);
+    writer.writeBytes(offsets[12], _signeCliniques);
+    writer.writeBytes(offsets[13], _suitePostOperatoire);
+    writer.writeBytes(offsets[14], _traitement);
   }
 
   @override
   PastientDatas deserialize(IsarCollection<PastientDatas> collection, int id,
       IsarBinaryReader reader, List<int> offsets) {
     final object = PastientDatas();
-    object.anticedents = reader.readString(offsets[0]);
-    object.dateEntre = reader.readDateTime(offsets[1]);
-    object.dateNaissance = reader.readDateTime(offsets[2]);
-    object.dateSortie = reader.readDateTimeOrNull(offsets[3]);
-    object.diagnostic = reader.readString(offsets[4]);
-    object.examenParaclinique = reader.readString(offsets[5]);
+    object.anticedents = reader.readString(offsets[1]);
+    object.dateEntre = reader.readDateTime(offsets[2]);
+    object.dateNaissance = reader.readDateTime(offsets[3]);
+    object.dateSortie = reader.readDateTimeOrNull(offsets[4]);
+    object.diagnostic = reader.readString(offsets[5]);
+    object.examenParaclinique = reader.readString(offsets[6]);
     object.id = id;
-    object.nom = reader.readString(offsets[6]);
-    object.prenom = reader.readString(offsets[7]);
-    object.protocolParaclinique = reader.readString(offsets[8]);
-    object.scoreClassification = reader.readString(offsets[9]);
-    object.sexe = reader.readString(offsets[10]);
-    object.signeCliniques = reader.readString(offsets[11]);
-    object.suitePostOperatoire = reader.readString(offsets[12]);
-    object.traitement = reader.readString(offsets[13]);
+    object.nom = reader.readString(offsets[7]);
+    object.prenom = reader.readString(offsets[8]);
+    object.protocolParaclinique = reader.readString(offsets[9]);
+    object.scoreClassification = reader.readString(offsets[10]);
+    object.sexe = reader.readString(offsets[11]);
+    object.signeCliniques = reader.readString(offsets[12]);
+    object.suitePostOperatoire = reader.readString(offsets[13]);
+    object.traitement = reader.readString(offsets[14]);
     return object;
   }
 
@@ -292,15 +314,15 @@ class _PastientDatasNativeAdapter extends IsarNativeTypeAdapter<PastientDatas> {
       case -1:
         return id as P;
       case 0:
-        return (reader.readString(offset)) as P;
+        return (reader.readStringList(offset) ?? []) as P;
       case 1:
-        return (reader.readDateTime(offset)) as P;
+        return (reader.readString(offset)) as P;
       case 2:
         return (reader.readDateTime(offset)) as P;
       case 3:
-        return (reader.readDateTimeOrNull(offset)) as P;
+        return (reader.readDateTime(offset)) as P;
       case 4:
-        return (reader.readString(offset)) as P;
+        return (reader.readDateTimeOrNull(offset)) as P;
       case 5:
         return (reader.readString(offset)) as P;
       case 6:
@@ -319,6 +341,8 @@ class _PastientDatasNativeAdapter extends IsarNativeTypeAdapter<PastientDatas> {
         return (reader.readString(offset)) as P;
       case 13:
         return (reader.readString(offset)) as P;
+      case 14:
+        return (reader.readString(offset)) as P;
       default:
         throw 'Illegal propertyIndex';
     }
@@ -332,6 +356,10 @@ extension PastientDatasQueryWhereSort
     on QueryBuilder<PastientDatas, PastientDatas, QWhere> {
   QueryBuilder<PastientDatas, PastientDatas, QAfterWhere> anyId() {
     return addWhereClauseInternal(const WhereClause(indexName: null));
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterWhere> anyNameWordsAny() {
+    return addWhereClauseInternal(const WhereClause(indexName: 'NameWords'));
   }
 }
 
@@ -409,10 +437,204 @@ extension PastientDatasQueryWhere
       includeUpper: includeUpper,
     ));
   }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterWhereClause>
+      nameWordsAnyEqualTo(String NameWordsElement) {
+    return addWhereClauseInternal(WhereClause(
+      indexName: 'NameWords',
+      lower: [NameWordsElement],
+      includeLower: true,
+      upper: [NameWordsElement],
+      includeUpper: true,
+    ));
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterWhereClause>
+      nameWordsAnyNotEqualTo(String NameWordsElement) {
+    if (whereSortInternal == Sort.asc) {
+      return addWhereClauseInternal(WhereClause(
+        indexName: 'NameWords',
+        upper: [NameWordsElement],
+        includeUpper: false,
+      )).addWhereClauseInternal(WhereClause(
+        indexName: 'NameWords',
+        lower: [NameWordsElement],
+        includeLower: false,
+      ));
+    } else {
+      return addWhereClauseInternal(WhereClause(
+        indexName: 'NameWords',
+        lower: [NameWordsElement],
+        includeLower: false,
+      )).addWhereClauseInternal(WhereClause(
+        indexName: 'NameWords',
+        upper: [NameWordsElement],
+        includeUpper: false,
+      ));
+    }
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterWhereClause>
+      nameWordsAnyGreaterThan(
+    String NameWordsElement, {
+    bool include = false,
+  }) {
+    return addWhereClauseInternal(WhereClause(
+      indexName: 'NameWords',
+      lower: [NameWordsElement],
+      includeLower: include,
+    ));
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterWhereClause>
+      nameWordsAnyLessThan(
+    String NameWordsElement, {
+    bool include = false,
+  }) {
+    return addWhereClauseInternal(WhereClause(
+      indexName: 'NameWords',
+      upper: [NameWordsElement],
+      includeUpper: include,
+    ));
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterWhereClause>
+      nameWordsAnyBetween(
+    String lowerNameWordsElement,
+    String upperNameWordsElement, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addWhereClauseInternal(WhereClause(
+      indexName: 'NameWords',
+      lower: [lowerNameWordsElement],
+      includeLower: includeLower,
+      upper: [upperNameWordsElement],
+      includeUpper: includeUpper,
+    ));
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterWhereClause>
+      nameWordsAnyStartsWith(String NameWordsElementPrefix) {
+    return addWhereClauseInternal(WhereClause(
+      indexName: 'NameWords',
+      lower: [NameWordsElementPrefix],
+      includeLower: true,
+      upper: ['$NameWordsElementPrefix\u{FFFFF}'],
+      includeUpper: true,
+    ));
+  }
 }
 
 extension PastientDatasQueryFilter
     on QueryBuilder<PastientDatas, PastientDatas, QFilterCondition> {
+  QueryBuilder<PastientDatas, PastientDatas, QAfterFilterCondition>
+      nameWordsAnyEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'NameWords',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterFilterCondition>
+      nameWordsAnyGreaterThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.gt,
+      include: include,
+      property: 'NameWords',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterFilterCondition>
+      nameWordsAnyLessThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.lt,
+      include: include,
+      property: 'NameWords',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterFilterCondition>
+      nameWordsAnyBetween(
+    String lower,
+    String upper, {
+    bool caseSensitive = true,
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition.between(
+      property: 'NameWords',
+      lower: lower,
+      includeLower: includeLower,
+      upper: upper,
+      includeUpper: includeUpper,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterFilterCondition>
+      nameWordsAnyStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.startsWith,
+      property: 'NameWords',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterFilterCondition>
+      nameWordsAnyEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.endsWith,
+      property: 'NameWords',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterFilterCondition>
+      nameWordsAnyContains(String value, {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.contains,
+      property: 'NameWords',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PastientDatas, PastientDatas, QAfterFilterCondition>
+      nameWordsAnyMatches(String pattern, {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.matches,
+      property: 'NameWords',
+      value: pattern,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
   QueryBuilder<PastientDatas, PastientDatas, QAfterFilterCondition>
       anticedentsEqualTo(
     String value, {
@@ -2172,6 +2394,11 @@ extension PastientDatasQueryWhereDistinct
 
 extension PastientDatasQueryProperty
     on QueryBuilder<PastientDatas, PastientDatas, QQueryProperty> {
+  QueryBuilder<PastientDatas, List<String>, QQueryOperations>
+      NameWordsProperty() {
+    return addPropertyNameInternal('NameWords');
+  }
+
   QueryBuilder<PastientDatas, String, QQueryOperations> anticedentsProperty() {
     return addPropertyNameInternal('anticedents');
   }

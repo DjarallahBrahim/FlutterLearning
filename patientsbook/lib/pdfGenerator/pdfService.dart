@@ -146,7 +146,6 @@ Future<void> createPDF(PastientDatas? pastientDatas) async {
     bounds: const Rect.fromLTWH(0, 160, 0, 0),
   );
   resultOfGrid?.page.defaultLayer.graphics.clientSize;
-  print(resultOfGrid?.page.defaultLayer.graphics.clientSize.height);
 
   resultOfGrid!.page.graphics.drawString(
       'Date de sortie:          ${pastientDatas.dateSortie == null || formatter.format(pastientDatas.dateSortie!).isEmpty ? '' : formatter.format(pastientDatas.dateSortie!)}',

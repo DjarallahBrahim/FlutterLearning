@@ -24,5 +24,6 @@ class PastientDatas {
   late String traitement;
   late String examenParaclinique;
 
-  
+  @Index(type: IndexType.value, caseSensitive: false)
+  List<String> get NameWords => nom.split(' ');
 }
